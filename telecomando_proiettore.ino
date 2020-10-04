@@ -39,6 +39,10 @@ void segnaleManuale(unsigned long int valore, int bits, int frequenza){
     if (valore % 2 == 1){
       digitalWrite(PB1, HIGH);
     }
-    delay
+    else{
+      digitalWrite(PB1, LOW);
+    }
+    valore /= 2;
+    delay(1);
   }
 }
