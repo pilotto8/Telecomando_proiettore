@@ -1,12 +1,12 @@
 #include <attiny85_ir_send.h>
 IRsend irsend;
 enum tipologie {
-  NEC,
-  SONY,
-  RC5,
-  RC6
+  nec,
+  sony,
+  rc5,
+  rc6
 };
-#define codec RC5
+#define codec nec
 void setup() {
   pinMode(A1, INPUT_PULLUP);
   pinMode(A2, INPUT_PULLUP);
@@ -15,25 +15,25 @@ void setup() {
 }
 
 void loop() {
-
   if (digitalRead(A1) == LOW) {
-    mandaSegnale(0x212FD02F, 8);
+    mandaSegnale(codec, 0x212FD02F, 32);
   }
   else if (digitalRead(A2) == LOW) {
-    mandaSegnale(0x212F34CB, 8);
+    mandaSegnale(codec, 0x212F34CB, 32);
   }
   else if (digitalRead(A3) == LOW) {
-    mandaSegnale(0x212F34CB, 8);
+    mandaSegnale(codec, 0x212F34CB, 32);
   }
+  while(bottoniPremuti);
 }
 void mandaSegnale(int tipo, unsigned long int valore, int bits) {
   switch (tipo) {
-    case NEC: irsend.sendNEC(valore, bits); break;
-    case SONY: irsend.sendSony(valore, bits); break;
-    case RC5: irsend.sendRC5(valore, bits); break;
-    case RC6: irsend.sendRC6(valore, bits); break;
+    case nec: irsend.sendNEC(valore, bits); break;
+    case sony: irsend.sendSony(valore, bits); break;
+    case rc5: irsend.sendRC5(valore, bits); break;
+    case rc6: irsend.sendRC6(valore, bits); break;
+    default:break;
   }
-  delay(500);
 }
 void mandaSegnale(unsigned long int valore, int frequenza) {
   while (valore > 0) {
@@ -48,4 +48,11 @@ void mandaSegnale(unsigned long int valore, int frequenza) {
   }
   digitalWrite(PB1, LOW);
   delay(500);
+}
+boolean bottoniPremuti(){
+  if(digitalRead(A1) == LOW || digitalRead(A2) == LOW || digitalRead(A3) == LOW){
+    return true;
+  }
+  delay(500);
+  return false;
 }
