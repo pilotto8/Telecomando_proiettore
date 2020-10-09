@@ -18,11 +18,11 @@ void setup()
 //void dump(void *v) {
 //  decode_results *results = (decode_results *)v
 void dump(decode_results *results) {
-  int count = results->rawlen;
+  long int count = results->rawlen;
   if (results->decode_type == UNKNOWN) {
     Serial.print("Unknown encoding: ");
   }
-    else if (results->decode_type == NEC) {
+  else if (results->decode_type == NEC) {
     Serial.print("Decoded NEC: ");
   }
   else if (results->decode_type == SONY) {
@@ -55,13 +55,8 @@ void dump(decode_results *results) {
   Serial.print(count, DEC);
   Serial.print("): ");
   for (int i = 0; i < count; i++) {
-    if ((i % 2) == 1) {
-      Serial.print(results->rawbuf[i]*USECPERTICK, DEC);
-    } 
-    else {
-      Serial.print(-(int)results->rawbuf[i]*USECPERTICK, DEC);
-    }
-    Serial.print(" ");
+    Serial.print(results->rawbuf[i]*USECPERTICK, DEC);
+    Serial.print(", ");
   }
   Serial.println("\n");
 }
